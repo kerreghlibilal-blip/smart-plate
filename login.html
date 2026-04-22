@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Plate - Connexion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .box {
+      max-width: 420px;
+      margin: 100px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 24px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 999px;
+      background: black;
+      color: white;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 16px;
+      font-weight: bold;
+    }
+    a {
+      display: inline-block;
+      margin-top: 14px;
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Connexion Smart Plate</h2>
+
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Mot de passe" />
+
+    <button id="loginBtn">Se connecter</button>
+
+    <p id="message"></p>
+    <a href="./index.html">Créer un compte</a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "REMPLACE_PAR_TA_API_KEY",
+      authDomain: "smart-plate-dz-a76d3.firebaseapp.com",
+      projectId: "smart-plate-dz-a76d3",
+      storageBucket: "smart-plate-dz-a76d3.appspot.com",
+      messagingSenderId: "304661540147",
+      appId: "REMPLACE_PAR_TON_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const btn = document.getElementById("loginBtn");
+    const msg = document.getElementById("message");
+
+    btn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      msg.textContent = "";
+
+      if (!email || !password) {
+        msg.textContent = "Veuillez remplir l’email et le mot de passe.";
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        msg.textContent = "✅ Connexion réussie";
+      } catch (error) {
+        msg.textContent = "❌ " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
