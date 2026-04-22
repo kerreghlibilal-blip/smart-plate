@@ -1,98 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Smart Plate - Inscription</title>
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       background: #f5f5f5;
       margin: 0;
-      padding: 0;
     }
+
     .box {
-      max-width: 420px;
+      max-width: 400px;
       margin: 100px auto;
       background: white;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      border-radius: 12px;
       text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    h2 {
-      margin-bottom: 24px;
-    }
+
     input {
       width: 100%;
       padding: 12px;
-      margin: 8px 0;
-      box-sizing: border-box;
+      margin: 10px 0;
     }
+
     button {
-      margin-top: 12px;
       padding: 12px 20px;
       border: none;
-      border-radius: 999px;
+      border-radius: 25px;
       background: black;
       color: white;
       cursor: pointer;
     }
+
     #message {
-      margin-top: 16px;
+      margin-top: 15px;
       font-weight: bold;
     }
   </style>
 </head>
+
 <body>
+
   <div class="box">
     <h2>Créer un compte Smart Plate</h2>
 
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Mot de passe" />
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Mot de passe">
 
     <button id="registerBtn">Créer mon compte</button>
 
     <p id="message"></p>
   </div>
 
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+    // ⚠️ REMPLACE PAR TES VRAIES INFOS FIREBASE
     const firebaseConfig = {
-      apiKey: "AIzaSyAGGhyY1ri6oa6IEvwhUkSv361LH5q3SgA",
-      authDomain: "smart-plate-dz-a76d3.firebaseapp.com",
-      projectId: "smart-plate-dz-a76d3",
-      storageBucket: "smart-plate-dz-a76d3.firebasestorage.app",
-      messagingSenderId: "304661540147",
-      appId: "1:304661540147:web:4c98086b7ade79e3026246"
+      apiKey: "ICI_TA_API_KEY",
+      authDomain: "ICI_TON_AUTH_DOMAIN",
+      projectId: "ICI_TON_PROJECT_ID",
+      storageBucket: "ICI_TON_STORAGE",
+      messagingSenderId: "ICI_TON_SENDER_ID",
+      appId: "ICI_TON_APP_ID"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     const btn = document.getElementById("registerBtn");
-    const msg = document.getElementById("message");
+    const message = document.getElementById("message");
 
     btn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
+      const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      msg.textContent = "";
+      message.innerText = "";
 
       if (!email || !password) {
-        msg.textContent = "Veuillez remplir l’email et le mot de passe.";
+        message.innerText = "Remplir tous les champs";
         return;
       }
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        msg.textContent = "✅ Compte créé avec succès";
+        message.innerText = "✅ Compte créé avec succès";
       } catch (error) {
-        msg.textContent = "❌ " + error.message;
+        message.innerText = "❌ " + error.message;
       }
     });
   </script>
+
 </body>
 </html>
