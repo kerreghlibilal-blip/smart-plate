@@ -33,7 +33,6 @@
       padding: 14px;
       margin: 8px 0 14px;
       border: 1px solid #999;
-      border-radius: 0;
       font-size: 16px;
       box-sizing: border-box;
     }
@@ -50,10 +49,6 @@
       min-width: 170px;
     }
 
-    button:hover {
-      opacity: 0.9;
-    }
-
     #message {
       margin-top: 18px;
       font-size: 16px;
@@ -63,7 +58,6 @@
   </style>
 </head>
 <body>
-
   <div class="container">
     <h1>Connexion Smart Plate</h1>
 
@@ -124,7 +118,7 @@
         }, 1000);
       } catch (error) {
         showMessage("Firebase: " + error.message);
-        console.error("Erreur connexion :", error);
+        console.error(error);
       }
     });
 
@@ -144,13 +138,12 @@
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        showMessage("Compte créé avec succès. Vous pouvez vous connecter.", "green");
+        showMessage("Compte créé avec succès.", "green");
       } catch (error) {
         showMessage("Firebase: " + error.message);
-        console.error("Erreur création compte :", error);
+        console.error(error);
       }
     });
   </script>
-
 </body>
 </html>
