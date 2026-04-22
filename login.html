@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Plate - Connexion</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion Smart Plate</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,6 +12,7 @@
       margin: 0;
       padding: 0;
     }
+
     .box {
       max-width: 420px;
       margin: 100px auto;
@@ -20,13 +22,18 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.08);
       text-align: center;
     }
-    h2 { margin-bottom: 24px; }
+
+    h2 {
+      margin-bottom: 24px;
+    }
+
     input {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
       box-sizing: border-box;
     }
+
     button {
       margin-top: 12px;
       padding: 12px 20px;
@@ -36,10 +43,12 @@
       color: white;
       cursor: pointer;
     }
+
     #message {
       margin-top: 16px;
       font-weight: bold;
     }
+
     a {
       display: inline-block;
       margin-top: 14px;
@@ -48,20 +57,24 @@
     }
   </style>
 </head>
+
 <body>
+
   <div class="box">
     <h2>Connexion Smart Plate</h2>
 
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Mot de passe" />
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Mot de passe">
 
     <button id="loginBtn">Se connecter</button>
 
     <p id="message"></p>
+
     <a href="./index.html">Créer un compte</a>
   </div>
 
   <script type="module">
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -81,6 +94,7 @@
     const msg = document.getElementById("message");
 
     btn.addEventListener("click", async () => {
+
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
@@ -97,7 +111,10 @@
       } catch (error) {
         msg.textContent = "❌ " + error.message;
       }
+
     });
+
   </script>
+
 </body>
 </html>
