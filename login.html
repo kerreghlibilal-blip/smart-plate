@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Connexion Smart Plate</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,73 +12,80 @@
       padding: 0;
     }
 
-    .box {
-      max-width: 420px;
-      margin: 100px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    .container {
+      width: 420px;
+      margin: 180px auto;
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 18px;
       text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    h2 {
-      margin-bottom: 24px;
+    h1 {
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #000;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
+      padding: 14px;
+      margin: 8px 0 14px;
+      border: 1px solid #999;
+      border-radius: 0;
+      font-size: 16px;
       box-sizing: border-box;
     }
 
     button {
-      margin-top: 12px;
-      padding: 12px 20px;
+      background: #000;
+      color: #fff;
       border: none;
-      border-radius: 999px;
-      background: black;
-      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 16px;
       cursor: pointer;
+      margin: 8px 5px;
+      min-width: 170px;
+    }
+
+    button:hover {
+      opacity: 0.9;
     }
 
     #message {
-      margin-top: 16px;
+      margin-top: 18px;
+      font-size: 16px;
       font-weight: bold;
-    }
-
-    a {
-      display: inline-block;
-      margin-top: 14px;
-      color: black;
-      text-decoration: none;
+      min-height: 24px;
     }
   </style>
 </head>
-
 <body>
 
-  <div class="box">
-    <h2>Connexion Smart Plate</h2>
+  <div class="container">
+    <h1>Connexion Smart Plate</h1>
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Mot de passe">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Mot de passe" />
 
     <button id="loginBtn">Se connecter</button>
+    <button id="registerBtn">Créer un compte</button>
 
     <p id="message"></p>
-
-    <a href="./index.html">Créer un compte</a>
   </div>
 
   <script type="module">
-
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCaJxKhXona7ij1vjLopqebDCqjhYbqK8c",
+      apiKey: "AIzaSyAGGhyY1ri6oa6IEvwhUkSv3611H5q3SgA",
       authDomain: "smart-plate-dz-a76d3.firebaseapp.com",
       projectId: "smart-plate-dz-a76d3",
       storageBucket: "smart-plate-dz-a76d3.firebasestorage.app",
@@ -90,30 +96,60 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const btn = document.getElementById("loginBtn");
-    const msg = document.getElementById("message");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const message = document.getElementById("message");
 
-    btn.addEventListener("click", async () => {
+    function showMessage(text, color = "red") {
+      message.style.color = color;
+      message.textContent = text;
+    }
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-
-      msg.textContent = "";
+    loginBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
 
       if (!email || !password) {
-        msg.textContent = "Veuillez remplir l’email et le mot de passe.";
+        showMessage("Veuillez remplir l'email et le mot de passe.");
         return;
       }
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        msg.textContent = "✅ Connexion réussie";
+        showMessage("Connexion réussie.", "green");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
       } catch (error) {
-        msg.textContent = "❌ " + error.message;
+        showMessage("Firebase: " + error.message);
+        console.error("Erreur connexion :", error);
       }
-
     });
 
+    registerBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        showMessage("Veuillez remplir l'email et le mot de passe.");
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage("Le mot de passe doit contenir au moins 6 caractères.");
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        showMessage("Compte créé avec succès. Vous pouvez vous connecter.", "green");
+      } catch (error) {
+        showMessage("Firebase: " + error.message);
+        console.error("Erreur création compte :", error);
+      }
+    });
   </script>
 
 </body>
